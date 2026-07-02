@@ -1,11 +1,6 @@
 """
-src/rag_chain.py
-
-Builds the conversational RAG pipeline using LangChain Expression
-Language (LCEL) + Groq.
 
 Two-stage pipeline
-──────────────────
 Stage 1  Condense question
     (chat_history + follow-up) → standalone question
     Required so FAISS retrieval works correctly in multi-turn chat.
@@ -77,12 +72,7 @@ def build_rag_chain(
     model_name: str = "llama-3.1-8b-instant",
     top_k: int = 4,
 ) -> dict[str, Any]:
-    """
-    Initialise the LLM, retriever, and condense chain.
-
-    Returns a plain dict so callers (Streamlit and FastAPI alike)
-    do not need to import LangChain types directly.
-    """
+    
     groq_api_key = os.environ.get("GROQ_API_KEY")
     if not groq_api_key:
         raise ValueError("GROQ_API_KEY is not set.")
@@ -111,18 +101,7 @@ def get_answer(
     question: str,
     chat_history: list[dict],
 ) -> tuple[str, list[Document]]:
-    """
-    Run the two-stage RAG pipeline and return (answer, source_docs).
-
-    Args:
-        chain_dict:   dict returned by build_rag_chain()
-        question:     the current user question
-        chat_history: previous messages (Streamlit format)
-
-    Returns:
-        answer:       LLM-generated answer string
-        source_docs:  Document chunks used for the answer (for citations)
-    """
+    
     llm: ChatGroq = chain_dict["llm"]
     retriever = chain_dict["retriever"]
     condense_chain = chain_dict["condense_chain"]

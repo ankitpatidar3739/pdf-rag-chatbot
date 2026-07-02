@@ -1,11 +1,3 @@
-"""
-src/pdf_processor.py
-
-Handles PDF ingestion: reading, splitting into chunks, embedding,
-and building a FAISS in-memory vector store.
-
-Embedding model: all-MiniLM-L6-v2 (runs locally, no API key needed).
-"""
 
 from __future__ import annotations
 
@@ -18,10 +10,7 @@ from langchain_huggingface import HuggingFaceEmbeddings
 
 
 def _get_embeddings() -> HuggingFaceEmbeddings:
-    """
-    Load the sentence-transformer embedding model.
-    HuggingFaceEmbeddings caches the model after the first load.
-    """
+    
     return HuggingFaceEmbeddings(
         model_name="all-MiniLM-L6-v2",
         model_kwargs={"device": "cpu"},
@@ -34,22 +23,7 @@ def process_pdfs(
     chunk_size: int = 600,
     chunk_overlap: int = 100,
 ) -> tuple[FAISS, int, list[str]]:
-    """
-    Ingest a list of file-like objects, build and return a FAISS index.
-
-    Each file must expose:
-        .name       — original filename (str)
-        .getvalue() — raw PDF bytes
-
-    This interface is satisfied by both Streamlit's UploadedFile and
-    the _Adapter wrapper in backend/main.py, so the same function
-    serves both entry points without modification.
-
-    Returns:
-        vector_store  — FAISS index ready for similarity search
-        total_chunks  — number of text chunks indexed
-        file_names    — list of original filenames processed
-    """
+    
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=chunk_size,
         chunk_overlap=chunk_overlap,

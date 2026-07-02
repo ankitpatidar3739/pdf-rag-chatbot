@@ -8,7 +8,7 @@ from src.utils import format_sources
 
 load_dotenv()
 
-# ─── Page config ───────────────────────────────────────────────────────────────
+
 st.set_page_config(
     page_title="DocuChat – PDF RAG Chatbot",
     page_icon="📄",
@@ -16,11 +16,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# ─── Custom CSS ────────────────────────────────────────────────────────────────
-# Dark mode fix: avoid hardcoded light colors for text/backgrounds.
-# Use CSS custom properties and currentColor where possible so Streamlit's
-# theme variables take effect. For elements we must style explicitly,
-# use color-scheme-aware values (e.g. oklch with light-dark()).
+
 st.markdown("""
 <style>
     /* ── Layout ── */
@@ -131,7 +127,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-# ─── Session state initialization ──────────────────────────────────────────────
+
 def init_session() -> None:
     """Set default values for all session state keys on first run."""
     defaults: dict = {
@@ -199,7 +195,7 @@ with st.sidebar:
         help="How many document chunks to retrieve per question.",
     )
 
-    # Process button
+    
     st.markdown("<hr class='section-divider'>", unsafe_allow_html=True)
     process_btn = st.button("⚡ Process PDFs", use_container_width=True, type="primary")
 
@@ -229,7 +225,7 @@ with st.sidebar:
                 except Exception as e:
                     st.error(f"Processing failed: {e}")
 
-    # Session stats
+    
     if st.session_state.vector_store:
         st.markdown("<hr class='section-divider'>", unsafe_allow_html=True)
         st.markdown("<div class='sidebar-header'>Session Info</div>", unsafe_allow_html=True)
@@ -261,14 +257,13 @@ with st.sidebar:
             st.rerun()
 
 
-# ─── Main area ─────────────────────────────────────────────────────────────────
 st.markdown("<div class='app-title'>📄 DocuChat</div>", unsafe_allow_html=True)
 st.markdown(
     "<div class='app-subtitle'>Ask anything about your PDFs — powered by LangChain + Groq</div>",
     unsafe_allow_html=True,
 )
 
-# Status badge
+
 if st.session_state.vector_store:
     st.markdown(
         f"<span class='status-badge badge-ready'>"
@@ -283,7 +278,7 @@ else:
 
 st.markdown("<hr class='section-divider'>", unsafe_allow_html=True)
 
-# ─── Chat history display ──────────────────────────────────────────────────────
+
 if not st.session_state.chat_history:
     if st.session_state.vector_store:
         st.markdown("""
@@ -326,12 +321,10 @@ else:
                             unsafe_allow_html=True,
                         )
 
-# ─── Input area ────────────────────────────────────────────────────────────────
+
 st.markdown("<hr class='section-divider'>", unsafe_allow_html=True)
 
-# st.form with clear_on_submit=True is the correct pattern for chat inputs in
-# Streamlit. It batches the text box + button into one submit event and wipes
-# the input after submission, preventing any re-run from seeing stale text.
+
 with st.form(key="question_form", clear_on_submit=True):
     col1, col2 = st.columns([6, 1])
     with col1:
@@ -349,10 +342,7 @@ with st.form(key="question_form", clear_on_submit=True):
             disabled=st.session_state.vector_store is None,
         )
 
-# ─── Handle query ──────────────────────────────────────────────────────────────
-# send_btn is True ONLY on the single run where the form was submitted.
-# On every subsequent rerun it is False, so this block never re-executes —
-# that's what prevents the infinite-loop bug.
+
 if send_btn and user_input.strip():
     question = user_input.strip()
     st.session_state.chat_history.append({"role": "user", "content": question})
