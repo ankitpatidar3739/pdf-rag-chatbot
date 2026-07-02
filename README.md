@@ -142,11 +142,3 @@ pdf-chatbot-rag/
 ├── .env.example
 └── README.md
 ```
-
----
-
----
-
-## 📄 License
-
-MIT
