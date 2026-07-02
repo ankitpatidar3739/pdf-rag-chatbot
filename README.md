@@ -119,17 +119,6 @@ The retrieved chunks are injected into a prompt template alongside the question.
 
 Multi-turn chat is tricky — "Who wrote that?" doesn't make sense without knowing what "that" is. A separate LLM call condenses each follow-up question + chat history into a standalone question before retrieval. This keeps the retriever working correctly across turns.
 
----
-
-## ⚠️ Known Limitations
-
-- Scanned PDFs (images) won't work — need OCR first (add `pytesseract` for that)
-- Very large PDFs (200+ pages) will be slow to process on first load
-- FAISS index is in-memory — it resets on page refresh (add persistence with `faiss.write_index` for production)
-- Context window limits on 8B models mean very long answers can get cut off
-
----
-
 ## 🔮 Possible Extensions
 
 - [ ] Persistent vector store (save/load FAISS index to disk)
@@ -155,10 +144,6 @@ pdf-chatbot-rag/
 ```
 
 ---
-
-## 🤝 Contributing
-
-Open to PRs — especially for OCR support or better chunking strategies.
 
 ---
 
