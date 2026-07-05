@@ -1,5 +1,7 @@
 # 📄 DocuChat — RAG-Powered PDF Chatbot
 
+Live:- https://pdf-rag-chatbot-xhcycsaekx2qlfdv5iz6jh.streamlit.app/
+
 A conversational AI app that lets you **chat with any PDF** using Retrieval-Augmented Generation (RAG). Upload your documents, ask questions in natural language, and get accurate answers with page-level source citations.
 
 Built with **LangChain**, **Groq (LLaMA 3)**, **FAISS**, and **Streamlit**.
